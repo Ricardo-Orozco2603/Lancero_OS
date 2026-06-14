@@ -1,0 +1,385 @@
+/* ================================================
+   LANCERO OS — TACTICAL RADAR SYSTEM
+   Color palette: Gold #d4a843 | #f0c050 | #a07828
+================================================ */
+
+:root {
+  --gold:       #d4a843;
+  --gold-hi:    #f0c050;
+  --gold-lo:    #a07828;
+  --gold-dim:   rgba(212,168,67,.18);
+  --gold-sweep: rgba(212,168,67,.9);
+  --bg-deep:    #060501;
+  --bg-mid:     #0d0a02;
+  --text:       #f0d890;
+  --text-dim:   rgba(240,216,144,.55);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  background:
+    radial-gradient(ellipse at center,
+      #0d0900 0%, #060501 55%, #020100 100%);
+  color: var(--text);
+}
+
+/* ── Tactical grid ── */
+.tactical-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(var(--gold-dim) 1px, transparent 1px),
+    linear-gradient(90deg, var(--gold-dim) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.tactical-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center,
+    transparent 0%, rgba(0,0,0,.3) 55%, rgba(0,0,0,.85) 100%);
+}
+.tactical-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(180deg,
+    rgba(255,255,255,.008), rgba(255,255,255,.008) 1px,
+    transparent 2px, transparent 4px);
+  opacity: .5;
+}
+
+/* ── Radar container — full viewport ── */
+.radar-background {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width:  min(100vw, 100vh);
+  height: min(100vw, 100vh);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Radar disc ── */
+.radar {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center,
+      rgba(40,28,4,.6) 0%,
+      rgba(12,8,0,.92) 60%,
+      rgba(2,1,0,.98) 100%);
+  border: 1px solid rgba(212,168,67,.22);
+  box-shadow:
+    0 0 60px  rgba(212,168,67,.06),
+    0 0 120px rgba(212,168,67,.03),
+    inset 0 0 80px  rgba(212,168,67,.04),
+    inset 0 0 200px rgba(0,0,0,.7);
+  overflow: hidden;
+}
+
+/* ── Rings ── */
+.radar-rings { position: absolute; inset: 0; }
+
+.ring {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+.ring:nth-child(1) { width:96%; height:96%; border:1px solid rgba(212,168,67,.16); }
+.ring:nth-child(2) { width:73%; height:73%; border:1px solid rgba(212,168,67,.14); }
+.ring:nth-child(3) { width:49%; height:49%; border:1px solid rgba(212,168,67,.12); }
+.ring:nth-child(4) { width:25%; height:25%; border:1px solid rgba(212,168,67,.10); }
+
+/* ring labels */
+.ring-label {
+  position: absolute;
+  left: 50%; top: 50%;
+  font-size: clamp(8px, 1vw, 12px);
+  color: rgba(212,168,67,.3);
+  letter-spacing: .06em;
+  pointer-events: none;
+}
+.ring-label.l1 { transform: translate(calc(-50% + 48.5vmin), -50%); }
+.ring-label.l2 { transform: translate(calc(-50% + 36.5vmin), -50%); }
+.ring-label.l3 { transform: translate(calc(-50% + 24.5vmin), -50%); }
+.ring-label.l4 { transform: translate(calc(-50% + 12.5vmin), -50%); }
+
+/* ── Tick marks every 30° ── */
+.ticks { position: absolute; inset: 0; }
+.tick {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 3%;
+  height: 1px;
+  background: rgba(212,168,67,.2);
+  transform-origin: left center;
+}
+.tick-major { width: 5%; background: rgba(212,168,67,.35); }
+
+/* ── Degree labels ── */
+.deg-label {
+  position: absolute;
+  left: 50%; top: 50%;
+  font-size: clamp(7px, .9vw, 11px);
+  color: rgba(212,168,67,.4);
+  letter-spacing: .04em;
+  transform-origin: center center;
+}
+
+/* ── Crosshair ── */
+.radar::before {
+  content: '';
+  position: absolute;
+  left: 1%; top: 50%;
+  width: 98%; height: 1px;
+  background: linear-gradient(90deg,
+    transparent, rgba(212,168,67,.2) 20%,
+    rgba(212,168,67,.35) 50%,
+    rgba(212,168,67,.2) 80%, transparent);
+}
+.radar::after {
+  content: '';
+  position: absolute;
+  top: 1%; left: 50%;
+  width: 1px; height: 98%;
+  background: linear-gradient(transparent,
+    rgba(212,168,67,.2) 20%,
+    rgba(212,168,67,.35) 50%,
+    rgba(212,168,67,.2) 80%, transparent);
+}
+
+/* ── Diagonal guides (45°) ── */
+.diag {
+  position: absolute;
+  left: 0; top: 50%;
+  width: 141.4%; height: 1px;
+  background: linear-gradient(90deg,
+    transparent, rgba(212,168,67,.07) 30%,
+    rgba(212,168,67,.07) 70%, transparent);
+  transform-origin: left center;
+}
+.diag.d1 { transform: rotate(45deg)  translate(-30%, 0); }
+.diag.d2 { transform: rotate(-45deg) translate(-30%, 0); }
+
+/* ── Sweep ── */
+.sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    conic-gradient(from 0deg,
+      rgba(212,168,67,.85),
+      rgba(240,192,80,.5) 6%,
+      rgba(212,168,67,.25) 15%,
+      rgba(212,168,67,.06) 25%,
+      transparent 35%);
+  filter: blur(2px);
+  mix-blend-mode: screen;
+  transform-origin: center center;
+}
+
+/* ── Center ── */
+.radar-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 14px; height: 14px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold-hi), var(--gold));
+  box-shadow:
+    0 0 10px var(--gold),
+    0 0 24px var(--gold),
+    0 0 44px rgba(212,168,67,.4);
+  z-index: 10;
+}
+
+/* ── Contacts ── */
+.contact { transition: opacity .25s ease; z-index: 5; }
+
+/* ── Corner HUD brackets ── */
+.hud-corner {
+  position: fixed;
+  z-index: 12;
+  width: 40px; height: 40px;
+  border-color: rgba(212,168,67,.5);
+  border-style: solid;
+}
+.hud-corner.tl { top:16px; left:16px; border-width: 2px 0 0 2px; }
+.hud-corner.tr { top:16px; right:16px; border-width: 2px 2px 0 0; }
+.hud-corner.bl { bottom:16px; left:16px; border-width: 0 0 2px 2px; }
+.hud-corner.br { bottom:16px; right:16px; border-width: 0 2px 2px 0; }
+
+/* ── Status HUD strips ── */
+.hud-top {
+  position: fixed; top:0; left:0; right:0;
+  z-index:12;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 20px;
+  font-size: clamp(9px, 1vw, 12px);
+  letter-spacing: .12em;
+  color: var(--text-dim);
+  border-bottom: 1px solid rgba(212,168,67,.08);
+  background: linear-gradient(rgba(6,5,1,.85), transparent);
+  backdrop-filter: blur(4px);
+}
+.hud-bottom {
+  position: fixed; bottom:0; left:0; right:0;
+  z-index:12;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 20px;
+  font-size: clamp(9px, 1vw, 12px);
+  letter-spacing: .12em;
+  color: var(--text-dim);
+  border-top: 1px solid rgba(212,168,67,.08);
+  background: linear-gradient(transparent, rgba(6,5,1,.85));
+  backdrop-filter: blur(4px);
+}
+.hud-stat { display:flex; gap:6px; align-items:center; }
+.hud-dot  { width:6px; height:6px; border-radius:50%; background:var(--gold); box-shadow:0 0 8px var(--gold); }
+.hud-dot.red  { background:#ff4444; box-shadow:0 0 8px #ff4444; }
+.hud-dot.unk  { background:#f0c050; box-shadow:0 0 8px #f0c050; }
+
+/* ── App interface ── */
+.app-interface {
+  position: relative; z-index:10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 20px;
+}
+
+/* ── Legend card ── */
+.legend {
+  position: fixed;
+  bottom: 52px; right: 20px;
+  z-index: 13;
+  display: flex; flex-direction: column; gap:6px;
+  padding: 10px 14px;
+  background: rgba(6,5,1,.75);
+  border: 1px solid rgba(212,168,67,.2);
+  backdrop-filter: blur(8px);
+  font-size: clamp(8px,.85vw,11px);
+  letter-spacing:.1em;
+  color: var(--text-dim);
+}
+.legend-row { display:flex; gap:8px; align-items:center; }
+.leg-dot { width:8px;height:8px;border-radius:50%; }
+
+/* ── Login panel ── */
+.status-bar {
+  width:100%; max-width:560px;
+  display:flex; justify-content:space-between;
+  margin-bottom:14px;
+  padding:10px 18px;
+  border:1px solid rgba(212,168,67,.22);
+  background:rgba(0,0,0,.5);
+  backdrop-filter:blur(12px);
+  border-radius:30px;
+  font-size:.72rem; color:var(--text-dim);
+}
+.grid-status {
+  display:flex; gap:18px; margin-bottom:22px;
+  font-size:.68rem; padding:7px 20px; border-radius:25px;
+  background:rgba(0,0,0,.4);
+  border:1px solid rgba(212,168,67,.14);
+  color:var(--text-dim);
+}
+.login-panel {
+  width:100%; max-width:500px;
+  background:rgba(6,4,0,.6);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(212,168,67,.28);
+  border-radius:20px;
+  padding:2rem;
+  box-shadow:
+    0 0 40px rgba(0,0,0,.7),
+    inset 0 0 30px rgba(212,168,67,.02);
+}
+.login-panel h1 {
+  text-align:center; font-size:2rem;
+  letter-spacing:6px; margin-bottom:8px;
+  color:var(--gold); text-shadow:0 0 20px rgba(212,168,67,.4);
+}
+.sub {
+  text-align:center; margin-bottom:22px;
+  color:var(--text-dim); font-size:.72rem; letter-spacing:.12em;
+}
+.form-group { margin-bottom:12px; }
+.form-group label {
+  display:block; margin-bottom:5px;
+  font-size:.68rem; letter-spacing:.1em; color:var(--text-dim);
+}
+.form-group input,
+.form-group select {
+  width:100%; padding:11px 12px;
+  border-radius:10px;
+  border:1px solid rgba(212,168,67,.28);
+  background:rgba(0,0,0,.5);
+  color:var(--text); outline:none;
+  font-family:inherit;
+}
+.form-group input:focus,
+.form-group select:focus {
+  border-color:var(--gold);
+  box-shadow:0 0 12px rgba(212,168,67,.25);
+}
+.form-group select option { background:#0d0a02; }
+.row-2col { display:flex; gap:10px; }
+.row-2col .form-group { flex:1; }
+.btn-create {
+  width:100%; margin-top:14px; padding:13px;
+  border:1px solid rgba(212,168,67,.45);
+  border-radius:28px; cursor:pointer;
+  color:var(--text); font-family:inherit;
+  font-weight:bold; letter-spacing:3px; font-size:.8rem;
+  background:linear-gradient(90deg, rgba(40,28,4,.9), rgba(20,14,0,.9));
+  transition:all .2s;
+}
+.btn-create:hover {
+  border-color:var(--gold-hi);
+  box-shadow:0 0 18px rgba(212,168,67,.4);
+  color:var(--gold-hi);
+}
+.encryption-footer {
+  display:flex; justify-content:space-between;
+  margin-top:18px; padding-top:13px;
+  font-size:.62rem; color:var(--text-dim);
+  border-top:1px dashed rgba(212,168,67,.18);
+}
+
+/* ── Scan line animation ── */
+@keyframes scanLine {
+  0%   { top: -2%; opacity: .6; }
+  100% { top: 102%; opacity: 0; }
+}
+.scan-line {
+  position: fixed;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent, rgba(212,168,67,.35) 30%,
+    rgba(212,168,67,.35) 70%, transparent);
+  pointer-events: none;
+  z-index: 20;
+  animation: scanLine 8s linear infinite;
+}
+
+/* ── Responsive ── */
+@media(max-width:768px) {
+  .row-2col { flex-direction:column; }
+  .status-bar { flex-direction:column; gap:6px; }
+  .grid-status { flex-wrap:wrap; justify-content:center; }
+  .legend { display:none; }
+}

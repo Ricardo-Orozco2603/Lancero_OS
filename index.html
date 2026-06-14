@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>LANCERO OS | Radar Táctico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+
+  <!-- Scan line -->
+  <div class="scan-line"></div>
+
+  <!-- HUD corners -->
+  <div class="hud-corner tl"></div>
+  <div class="hud-corner tr"></div>
+  <div class="hud-corner bl"></div>
+  <div class="hud-corner br"></div>
+
+  <!-- HUD strips -->
+  <div class="hud-top">
+    <div class="hud-stat"><div class="hud-dot"></div><span>LANCERO-OS v2.4</span></div>
+    <div class="hud-stat" id="clock">00:00:00 UTC-5</div>
+    <div class="hud-stat"><div class="hud-dot"></div><span>SATCOM LINKED</span></div>
+  </div>
+  <div class="hud-bottom">
+    <span>LAT 04°00'N · LON 72°59'W</span>
+    <span id="contact-count">CONTACTOS: 5</span>
+    <span>AES-256 ENCRYPTED</span>
+  </div>
+
+  <!-- Tactical background grid -->
+  <div class="tactical-bg"></div>
+
+  <!-- RADAR — full screen -->
+  <div class="radar-background">
+    <div class="radar">
+      <!-- Diagonal guides -->
+      <div class="diag d1"></div>
+      <div class="diag d2"></div>
+      <!-- Rings -->
+      <div class="radar-rings">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+      <!-- Ring labels -->
+      <span class="ring-label l1">96km</span>
+      <span class="ring-label l2">72km</span>
+      <span class="ring-label l3">48km</span>
+      <span class="ring-label l4">24km</span>
+      <!-- Tick container (JS fills this) -->
+      <div class="ticks" id="ticks"></div>
+      <!-- Sweep -->
+      <div class="sweep"></div>
+      <!-- Center -->
+      <div class="radar-center"></div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div style="font-size:.65rem;letter-spacing:.14em;color:rgba(212,168,67,.5);margin-bottom:4px;">LEYENDA</div>
+    <div class="legend-row"><div class="leg-dot" style="background:#aaffaa;box-shadow:0 0 6px #aaffaa"></div><span>AMIGO</span></div>
+    <div class="legend-row"><div class="leg-dot" style="background:#ff5555;box-shadow:0 0 6px #ff5555"></div><span>HOSTIL</span></div>
+    <div class="legend-row"><div class="leg-dot" style="background:#f0c050;box-shadow:0 0 6px #f0c050"></div><span>DESCONOCIDO</span></div>
+  </div>
+
+  <!-- App UI -->
+  <div class="app-interface">
+    <div class="status-bar">
+      <span>SYS // LANCERO-05 v2.4</span>
+      <span id="clock2">00:00:00 UTC-5</span>
+    </div>
+    <div class="grid-status">
+      <span>GRID ONLINE</span>
+      <span>SATCOM LINKED</span>
+      <span>SECURE CHANNEL</span>
+    </div>
+    <div class="login-panel">
+      <h1>LANCERO OS</h1>
+      <p class="sub">TACTICAL EVOLUTION SYSTEM</p>
+      <div class="form-group">
+        <label>USUARIO TÁCTICO</label>
+        <input type="text" placeholder="Ej: AEROTECNICO">
+      </div>
+      <div class="form-group">
+        <label>CORREO DE OPERACIÓN</label>
+        <input type="email" placeholder="operador@lancero.mil">
+      </div>
+      <div class="row-2col">
+        <div class="form-group">
+          <label>EJÉRCITO</label>
+          <select>
+            <option>ARMOR</option>
+            <option>FUERZA AEROESPACIAL</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>RANGO INICIAL</label>
+          <select>
+            <option>Aerotécnico</option>
+            <option>Táctico</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>CONTRASEÑA</label>
+        <input type="password" placeholder="••••••••">
+      </div>
+      <div class="form-group">
+        <label>CONFIRMAR CONTRASEÑA</label>
+        <input type="password" placeholder="••••••••">
+      </div>
+      <button class="btn-create">CREAR CUENTA</button>
+      <div class="encryption-footer">
+        <span>🔒 AES-256</span>
+        <span>📍 LAT 04°00'N</span>
+        <span>📡 TRACKING ON</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="Radar.js"></script>
+  <script>
+    // Clock
+    function tick() {
+      const now = new Date();
+      const s = now.toLocaleTimeString('es', {hour12:false}) + ' UTC-5';
+      document.getElementById('clock').textContent = s;
+      document.getElementById('clock2').textContent = s;
+    }
+    tick(); setInterval(tick, 1000);
+
+    // Tick marks
+    const ticksEl = document.getElementById('ticks');
+    for (let i = 0; i < 72; i++) {
+      const t = document.createElement('div');
+      t.className = 'tick' + (i % 6 === 0 ? ' tick-major' : '');
+      const angle = (i * 5) - 90;
+      // position from center outward at 48% radius
+      const rad = angle * Math.PI / 180;
+      const r = 47.5;
+      const cx = 50 + r * Math.cos(rad);
+      const cy = 50 + r * Math.sin(rad);
+      t.style.cssText = `
+        position:absolute;
+        left:${cx}%;top:${cy}%;
+        width:${i%6===0?'1.8%':'1.1%'};height:1px;
+        background:rgba(212,168,67,${i%6===0?.35:.18});
+        transform:rotate(${angle+90}deg);
+        transform-origin:left center;
+      `;
+      ticksEl.appendChild(t);
+    }
+
+    // Degree labels every 30°
+    const degs = [0,30,60,90,120,150,180,210,240,270,300,330];
+    const labels = ['N','030','060','E','120','150','S','210','240','W','300','330'];
+    degs.forEach((deg,i) => {
+      const el = document.createElement('span');
+      el.style.cssText = `
+        position:absolute;
+        font-size:clamp(7px,.9vw,11px);
+        color:rgba(212,168,67,${i%3===0?.55:.3});
+        letter-spacing:.04em;
+        font-family:'Share Tech Mono',monospace;
+      `;
+      const rad = (deg - 90) * Math.PI / 180;
+      const r = 44;
+      const cx = 50 + r * Math.cos(rad);
+      const cy = 50 + r * Math.sin(rad);
+      el.style.left = cx + '%';
+      el.style.top  = cy + '%';
+      el.style.transform = 'translate(-50%,-50%)';
+      el.textContent = labels[i];
+      document.querySelector('.radar').appendChild(el);
+    });
+  </script>
+</body>
+</html>

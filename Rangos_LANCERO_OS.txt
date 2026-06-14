@@ -1,0 +1,89 @@
+## 🪖 Ejército Nacional
+
+Ruta Soldado
+Soldado
+Soldado Profesional
+Cabo Tercero
+Cabo Segundo
+Cabo Primero
+Sargento Segundo
+Sargento Viceprimero
+Sargento Primero
+Sargento Mayor
+
+Ruta Fuerzas Especiales
+Paracaidista
+Lancero
+Comando
+AFEUR
+Fuerzas Especiales
+
+Ruta Élite
+Operador Especial
+Operador Avanzado
+Líder de Escuadra
+Jefe Operacional
+Instructor
+Maestro Lancero
+Comandante Táctico
+
+-----------------------------------
+
+## ⚓ Armada Nacional
+
+Ruta Marinero
+Marinero Segundo
+Marinero Primero
+Cabo Tercero
+Cabo Segundo
+Cabo Primero
+Suboficial Segundo
+Suboficial Jefe
+Suboficial Primero
+Suboficial Jefe Técnico
+
+Ruta Fuerzas Especiales Navales
+Infante de Marina
+Infante Anfibio
+Comando Anfibio
+Buzo de Combate
+Fuerza Naval Especial
+
+Ruta Élite
+Operador Naval
+Operador Anfibio
+Líder de Escuadra Naval
+Jefe de Operaciones Navales
+Instructor Naval
+Maestro Anfibio
+Comandante Marítimo
+
+-----------------------------------
+
+## ✈️ Fuerza Aeroespacial Colombiana
+
+Ruta Aerotécnico
+Aerotécnico
+Técnico Cuarto
+Técnico Tercero
+Técnico Segundo
+Técnico Primero
+Jefe Técnico
+Jefe Técnico Master
+Jefe Técnico de Comando
+
+Ruta Fuerzas Especiales FAC
+Pararescatista
+Operador de Defensa de Bases
+Operador Táctico FAC
+Operador Especial FAC
+Escuadrón Especial Aéreo
+
+Ruta Élite
+Operador Aéreo
+Operador Aéreo Avanzado
+Líder Táctico Aéreo
+Jefe de Operaciones Aéreas
+Instructor FAC
+Maestro Aerotáctico
+Comandante Aeroespacial
