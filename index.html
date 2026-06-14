@@ -8,47 +8,66 @@
 </head>
 <body>
 
+  <!-- Layers & Overlays -->
   <div class="vignette"></div>
-
+  <div class="scan-line"></div>
   <canvas id="radarCanvas"></canvas>
 
-  <!-- Brackets perimetrales del HUD -->
+  <!-- HUD Frame -->
+  <div class="hud-frame"></div>
+
+  <!-- Perimeter Brackets -->
   <div class="bracket b-tl"></div>
   <div class="bracket b-tr"></div>
   <div class="bracket b-bl"></div>
   <div class="bracket b-br"></div>
 
-  <div class="hud-frame"></div>
-
-  <!-- Etiquetas HUD -->
+  <!-- HUD Labels -->
   <div class="hud-label hl-tl">// LANCERO-OS v2.4</div>
-  <div class="hud-label hl-tc">• SECURE CHANNEL</div>
+  <div class="hud-label hl-tc">SECURE CHANNEL</div>
   <div class="hud-label hl-tr" id="utc-clock">00:00:00 UTC</div>
   <div class="hud-label hl-bl">LAT 84°00'N — LON 72°59'W</div>
-  <div class="hud-label hl-bc">ENCR: AES-256</div>
+  <div class="hud-label hl-bc">ENCR: AES-256-GCM</div>
   <div class="hud-label hl-br">UNIT: LANCEROOS</div>
+
+  <!-- Data Tickers -->
+  <div class="data-ticker ticker-top">
+    <span class="ticker-inner">
+      SYS_STATUS: NOMINAL &nbsp;|&nbsp; THREAT_LEVEL: LOW &nbsp;|&nbsp; NODES: 14/14 ONLINE &nbsp;|&nbsp; LAST_AUTH: ██████ &nbsp;|&nbsp; ENCRYPTION: ACTIVE &nbsp;|&nbsp; SIGNAL: 98.7% &nbsp;|&nbsp; PROTOCOL: TLS-1.3 &nbsp;|&nbsp; REGION: COLOMBIA_COL &nbsp;|&nbsp; BUILD: 2024.06.14 &nbsp;|&nbsp;
+    </span>
+  </div>
+  <div class="data-ticker ticker-bottom">
+    <span class="ticker-inner">
+      AUTH_MODULE: READY &nbsp;|&nbsp; SESSIONS: 3 ACTIVE &nbsp;|&nbsp; UPTIME: 847h 33m &nbsp;|&nbsp; INTEGRITY: VERIFIED &nbsp;|&nbsp; FIREWALL: ENGAGED &nbsp;|&nbsp; LAST_SCAN: 00:00:12 AGO &nbsp;|&nbsp; CLASSIFIED: TOP-SECRET &nbsp;|&nbsp; LANCERO TACTICAL EVOLUTION SYSTEM &nbsp;|&nbsp;
+    </span>
+  </div>
 
   <!-- Login Box -->
   <div class="login-box">
+    <div class="classification-bar"></div>
+
     <div class="box-bracket bb-tl"></div>
     <div class="box-bracket bb-tr"></div>
     <div class="box-bracket bb-bl"></div>
     <div class="box-bracket bb-br"></div>
 
-    <!-- Emblema SVG -->
+    <!-- Emblem -->
     <div class="emblem-container">
+      <div class="emblem-ping"></div>
       <svg class="emblem" viewBox="-20 -20 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="50" r="34" stroke="#ff9800" stroke-width="1.2" opacity="0.4"/>
-        <circle cx="50" cy="50" r="30" stroke="#ff9800" stroke-width="1.8"/>
-        <path d="M26 50 C26 65, 34 74, 50 74 C66 74, 74 65, 74 50" stroke="#ff9800" stroke-width="1" stroke-dasharray="2 2" opacity="0.6"/>
+        <circle cx="50" cy="50" r="34" stroke="#ff9800" stroke-width="1.2" opacity="0.35"/>
+        <circle cx="50" cy="50" r="30" stroke="#ff9800" stroke-width="1.6"/>
+        <path d="M26 50 C26 65, 34 74, 50 74 C66 74, 74 65, 74 50"
+              stroke="#ff9800" stroke-width="1" stroke-dasharray="2 3" opacity="0.55"/>
         <path d="M50 22 L54 34 L64 38 L55 44 L57 56 L50 49 L43 56 L45 44 L36 38 L46 34 Z"
-              fill="#ff9800" fill-opacity="0.2" stroke="#ff9800" stroke-width="1.2"/>
-        <path d="M50 25 L50 64 M38 46 L62 46" stroke="#ff9800" stroke-width="0.8" opacity="0.4"/>
+              fill="#ff9800" fill-opacity="0.18" stroke="#ff9800" stroke-width="1.2"/>
+        <path d="M50 25 L50 64 M38 46 L62 46"
+              stroke="#ff9800" stroke-width="0.7" opacity="0.35"/>
         <path d="M38 40 Q28 42 34 52 Q44 48 46 44" stroke="#ff9800" stroke-width="1"/>
         <path d="M62 40 Q72 42 66 52 Q56 48 54 44" stroke="#ff9800" stroke-width="1"/>
         <g class="animated-sparkle-ring">
-          <circle cx="50" cy="50" r="49" stroke="rgba(255,152,0,0.3)" stroke-width="1" stroke-dasharray="4 4"/>
-          <path d="M50 -5 L53.5 -1 L50 3 L46.5 -1 Z" fill="#ffffff" filter="drop-shadow(0 0 5px #ffffff)"/>
+          <circle cx="50" cy="50" r="48" stroke="rgba(255,152,0,0.25)" stroke-width="1" stroke-dasharray="3 5"/>
+          <path d="M50 -5 L53.5 -1 L50 3 L46.5 -1 Z" fill="#ffffff" filter="drop-shadow(0 0 4px #ffffff)"/>
         </g>
       </svg>
     </div>
@@ -56,26 +75,69 @@
     <h1 class="system-title">LANCERO OS</h1>
     <p class="system-subtitle">Tactical Evolution System</p>
 
+    <div class="version-tag">
+      <span>BUILD 2024 &nbsp;·&nbsp; CLEARANCE LEVEL: CLASSIFIED</span>
+    </div>
+
     <div class="divider"></div>
 
     <div class="tabs">
-      <div class="tab active">Iniciar Sesión</div>
-      <div class="tab inactive">Registro</div>
+      <div class="tab active" id="tab-login" onclick="switchTab('login')">Iniciar Sesión</div>
+      <div class="tab inactive" id="tab-registro" onclick="switchTab('registro')">Registro</div>
     </div>
 
-    <form onsubmit="event.preventDefault();">
+    <form onsubmit="handleSubmit(event);">
       <div class="input-group">
+        <span class="input-label">IDENTIFICADOR</span>
+        <input type="text" class="input-field" placeholder="USUARIO" autocomplete="off" id="username">
         <div class="input-icon"></div>
-        <input type="text" class="input-field" placeholder="USUARIO" autocomplete="off">
       </div>
       <div class="input-group">
+        <span class="input-label">CLAVE DE ACCESO</span>
+        <input type="password" class="input-field" placeholder="CONTRASEÑA" id="password">
         <div class="input-icon"></div>
-        <input type="password" class="input-field" placeholder="CONTRASEÑA">
       </div>
-      <button type="submit" class="btn-submit">Acceder al Sistema</button>
+
+      <div class="security-row">
+        <span class="security-item">AES-256-GCM</span>
+        <span class="security-item">2FA HABILITADO</span>
+        <span class="security-item">PROTOCOLO SEGURO</span>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submit-btn">Acceder al Sistema</button>
     </form>
+
+    <div class="login-footer">
+      <span class="footer-item">Ver 2.4</span>
+      <span class="footer-item">Clasificado</span>
+      <span class="footer-item">FFMM-COL</span>
+    </div>
   </div>
 
   <script src="Radar.js"></script>
+  <script>
+    function switchTab(tab) {
+      const loginTab    = document.getElementById('tab-login');
+      const registroTab = document.getElementById('tab-registro');
+      if (tab === 'login') {
+        loginTab.className    = 'tab active';
+        registroTab.className = 'tab inactive';
+      } else {
+        loginTab.className    = 'tab inactive';
+        registroTab.className = 'tab active';
+      }
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.classList.add('loading');
+      btn.textContent = 'Autenticando...';
+      setTimeout(() => {
+        btn.classList.remove('loading');
+        btn.textContent = 'Acceder al Sistema';
+      }, 2200);
+    }
+  </script>
 </body>
 </html>
