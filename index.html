@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>LANCERO OS | Radar Táctico</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="Style.css">
 </head>
 <body>
@@ -19,167 +19,296 @@
   <div class="hud-corner bl"></div>
   <div class="hud-corner br"></div>
 
-  <!-- HUD strips -->
+  <!-- HUD top strip -->
   <div class="hud-top">
-    <div class="hud-stat"><div class="hud-dot"></div><span>LANCERO-OS v2.4</span></div>
-    <div class="hud-stat" id="clock">00:00:00 UTC-5</div>
-    <div class="hud-stat"><div class="hud-dot"></div><span>SATCOM LINKED</span></div>
+    <span>SYS // LANCERO-OS v2.4</span>
+    <span>GRID ONLINE</span>
+    <span>SATCOM LINKED</span>
+    <span class="hud-accent">+ SECURE CHANNEL</span>
+    <span id="clock">00:00:00 UTC-5</span>
   </div>
+
+  <!-- HUD bottom strip -->
   <div class="hud-bottom">
-    <span>LAT 04°00'N · LON 72°59'W</span>
-    <span id="contact-count">CONTACTOS: 5</span>
-    <span>AES-256 ENCRYPTED</span>
+    <span>LAT 04°08'N · LON 72°59'W</span>
+    <span>ENCRYPTION ACTIVE · AES-256</span>
+    <span id="contact-count">TRACKING ENABLED</span>
+    <span>UNIT: LANCEROS</span>
   </div>
 
-  <!-- Tactical background grid -->
-  <div class="tactical-bg"></div>
+  <!-- ═══════════════════════════════════════════ -->
+  <!--  MAIN LAYOUT: LEFT PANEL | CENTER | RIGHT  -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="main-layout">
 
-  <!-- RADAR — full screen -->
-  <div class="radar-background">
-    <div class="radar">
-      <!-- Diagonal guides -->
-      <div class="diag d1"></div>
-      <div class="diag d2"></div>
-      <!-- Rings -->
-      <div class="radar-rings">
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-      </div>
-      <!-- Ring labels -->
-      <span class="ring-label l1">96km</span>
-      <span class="ring-label l2">72km</span>
-      <span class="ring-label l3">48km</span>
-      <span class="ring-label l4">24km</span>
-      <!-- Tick container (JS fills this) -->
-      <div class="ticks" id="ticks"></div>
-      <!-- Sweep -->
-      <div class="sweep"></div>
-      <!-- Center -->
-      <div class="radar-center"></div>
-    </div>
-  </div>
-
-  <!-- Legend -->
-  <div class="legend">
-    <div style="font-size:.65rem;letter-spacing:.14em;color:rgba(212,168,67,.5);margin-bottom:4px;">LEYENDA</div>
-    <div class="legend-row"><div class="leg-dot" style="background:#aaffaa;box-shadow:0 0 6px #aaffaa"></div><span>AMIGO</span></div>
-    <div class="legend-row"><div class="leg-dot" style="background:#ff5555;box-shadow:0 0 6px #ff5555"></div><span>HOSTIL</span></div>
-    <div class="legend-row"><div class="leg-dot" style="background:#f0c050;box-shadow:0 0 6px #f0c050"></div><span>DESCONOCIDO</span></div>
-  </div>
-
-  <!-- App UI -->
-  <div class="app-interface">
-    <div class="status-bar">
-      <span>SYS // LANCERO-05 v2.4</span>
-      <span id="clock2">00:00:00 UTC-5</span>
-    </div>
-    <div class="grid-status">
-      <span>GRID ONLINE</span>
-      <span>SATCOM LINKED</span>
-      <span>SECURE CHANNEL</span>
-    </div>
-    <div class="login-panel">
-      <h1>LANCERO OS</h1>
-      <p class="sub">TACTICAL EVOLUTION SYSTEM</p>
-      <div class="form-group">
-        <label>USUARIO TÁCTICO</label>
-        <input type="text" placeholder="Ej: AEROTECNICO">
-      </div>
-      <div class="form-group">
-        <label>CORREO DE OPERACIÓN</label>
-        <input type="email" placeholder="operador@lancero.mil">
-      </div>
-      <div class="row-2col">
-        <div class="form-group">
-          <label>EJÉRCITO</label>
-          <select>
-            <option>ARMOR</option>
-            <option>FUERZA AEROESPACIAL</option>
-          </select>
+    <!-- LEFT RADAR PANEL -->
+    <div class="side-panel left-panel">
+      <div class="radar-wrap">
+        <div class="radar" id="radar-left">
+          <div class="diag d1"></div>
+          <div class="diag d2"></div>
+          <div class="radar-rings">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+          </div>
+          <span class="ring-label l1">96km</span>
+          <span class="ring-label l2">72km</span>
+          <span class="ring-label l3">48km</span>
+          <span class="ring-label l4">24km</span>
+          <div class="ticks" id="ticks-left"></div>
+          <div class="sweep"></div>
+          <div class="radar-center"></div>
         </div>
-        <div class="form-group">
-          <label>RANGO INICIAL</label>
-          <select>
-            <option>Aerotécnico</option>
-            <option>Táctico</option>
-          </select>
-        </div>
+        <!-- Scan beams emanating from radar -->
+        <div class="scan-beam beam-tl"></div>
+        <div class="scan-beam beam-tr"></div>
+        <div class="scan-beam beam-bl"></div>
+        <div class="scan-beam beam-br"></div>
       </div>
-      <div class="form-group">
-        <label>CONTRASEÑA</label>
-        <input type="password" placeholder="••••••••">
-      </div>
-      <div class="form-group">
-        <label>CONFIRMAR CONTRASEÑA</label>
-        <input type="password" placeholder="••••••••">
-      </div>
-      <button class="btn-create">CREAR CUENTA</button>
-      <div class="encryption-footer">
-        <span>🔒 AES-256</span>
-        <span>📍 LAT 04°00'N</span>
-        <span>📡 TRACKING ON</span>
+      <!-- Side panel HUD data -->
+      <div class="panel-data">
+        <div class="data-row"><span class="d-label">CONTACTOS</span><span class="d-val" id="contact-count-left">11</span></div>
+        <div class="data-row"><span class="d-label">AMIGOS</span><span class="d-val friendly">05</span></div>
+        <div class="data-row"><span class="d-label">HOSTILES</span><span class="d-val hostile">03</span></div>
+        <div class="data-row"><span class="d-label">DESCONOC.</span><span class="d-val unknown">03</span></div>
+        <div class="data-sep"></div>
+        <div class="data-row"><span class="d-label">ALCANCE</span><span class="d-val">96km</span></div>
+        <div class="data-row"><span class="d-label">MODO</span><span class="d-val">ACTIVO</span></div>
       </div>
     </div>
-  </div>
+
+    <!-- CENTER LOGIN PANEL -->
+    <div class="center-panel">
+      <div class="brand-header">
+        <div class="brand-emblem">
+          <div class="emblem-ring"></div>
+          <div class="emblem-inner">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+              <path d="M22 4 L38 34 L22 28 L6 34 Z" fill="none" stroke="#00d4d4" stroke-width="1.2" opacity=".8"/>
+              <circle cx="22" cy="22" r="8" fill="none" stroke="#00ffff" stroke-width="1" opacity=".6"/>
+              <path d="M22 14 L26 22 L22 20 L18 22 Z" fill="#00ffff" opacity=".9"/>
+            </svg>
+          </div>
+        </div>
+        <h1 class="brand-title">LANCERO OS</h1>
+        <p class="brand-sub">TACTICAL EVOLUTION SYSTEM</p>
+      </div>
+
+      <!-- Tab switcher -->
+      <div class="tab-switcher">
+        <button class="tab" id="tab-login">INICIAR SESIÓN</button>
+        <button class="tab active" id="tab-register">REGISTRO</button>
+      </div>
+
+      <!-- Register form -->
+      <div class="form-panel" id="form-register">
+        <div class="input-group">
+          <span class="input-prefix">›</span>
+          <input type="text" placeholder="USUARIO TÁCTICO" autocomplete="off">
+        </div>
+        <div class="input-group">
+          <span class="input-prefix">›</span>
+          <input type="email" placeholder="CORREO DE OPERACIÓN">
+        </div>
+
+        <!-- Branch selector -->
+        <div class="branch-selector">
+          <button class="branch-btn" data-branch="ejercito">
+            <span class="branch-icon">★</span>
+            <span>EJÉRCITO</span>
+          </button>
+          <button class="branch-btn" data-branch="armada">
+            <span class="branch-icon">⚓</span>
+            <span>ARMADA</span>
+          </button>
+          <button class="branch-btn active" data-branch="fuerza">
+            <span class="branch-icon">✈</span>
+            <span>FUERZA AEROESPACIAL</span>
+          </button>
+        </div>
+
+        <!-- Rank display -->
+        <div class="rank-display">
+          <span class="rank-icon">✈</span>
+          <div>
+            <div class="rank-label">RANGO INICIAL</div>
+            <div class="rank-value" id="rank-value">Aerotécnico</div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <span class="input-prefix">›</span>
+          <input type="password" placeholder="CONTRASEÑA" id="pw1">
+          <button class="pw-toggle" onclick="togglePw('pw1',this)">VER</button>
+        </div>
+        <div class="input-group">
+          <span class="input-prefix">›</span>
+          <input type="password" placeholder="CONFIRMAR CONTRASEÑA" id="pw2">
+        </div>
+
+        <button class="btn-main">CREAR CUENTA</button>
+        <p class="form-footer">¿Ya tienes cuenta? <a href="#" id="go-login">INICIA SESIÓN</a></p>
+      </div>
+
+      <!-- Login form -->
+      <div class="form-panel hidden" id="form-login">
+        <div class="input-group">
+          <span class="input-prefix">›</span>
+          <input type="text" placeholder="USUARIO TÁCTICO">
+        </div>
+        <div class="input-group">
+          <span class="input-prefix">›</span>
+          <input type="password" placeholder="CONTRASEÑA" id="pw-login">
+          <button class="pw-toggle" onclick="togglePw('pw-login',this)">VER</button>
+        </div>
+        <button class="btn-main">ACCEDER</button>
+        <p class="form-footer">¿No tienes cuenta? <a href="#" id="go-register">REGISTRO</a></p>
+      </div>
+    </div>
+
+    <!-- RIGHT RADAR PANEL -->
+    <div class="side-panel right-panel">
+      <div class="radar-wrap">
+        <div class="radar" id="radar-right">
+          <div class="diag d1"></div>
+          <div class="diag d2"></div>
+          <div class="radar-rings">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+          </div>
+          <div class="ticks" id="ticks-right"></div>
+          <div class="sweep sweep-right"></div>
+          <div class="radar-center"></div>
+        </div>
+        <div class="scan-beam beam-tl"></div>
+        <div class="scan-beam beam-tr"></div>
+        <div class="scan-beam beam-bl"></div>
+        <div class="scan-beam beam-br"></div>
+      </div>
+      <!-- Side panel HUD data -->
+      <div class="panel-data">
+        <div class="data-row"><span class="d-label">FREQ</span><span class="d-val">9.8 GHz</span></div>
+        <div class="data-row"><span class="d-label">PULSO</span><span class="d-val">1.2μs</span></div>
+        <div class="data-row"><span class="d-label">PRF</span><span class="d-val">2400 Hz</span></div>
+        <div class="data-sep"></div>
+        <div class="data-row"><span class="d-label">MODO</span><span class="d-val">BÚSQUEDA</span></div>
+        <div class="data-row"><span class="d-label">IFF</span><span class="d-val accent">ACTIVO</span></div>
+        <div class="data-row"><span class="d-label">ENLACE</span><span class="d-val accent">LINK-16</span></div>
+      </div>
+    </div>
+
+  </div><!-- /main-layout -->
+
+  <!-- Diagonal beam lines (full screen decorative) -->
+  <div class="global-beam gb-tl"></div>
+  <div class="global-beam gb-tr"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="Radar.js"></script>
   <script>
-    // Clock
+    // ── Clock ─────────────────────────────────
     function tick() {
       const now = new Date();
-      const s = now.toLocaleTimeString('es', {hour12:false}) + ' UTC-5';
+      const s = now.toLocaleTimeString('es-CO', {hour12:false, timeZone:'America/Bogota'}) + ' UTC-5';
       document.getElementById('clock').textContent = s;
-      document.getElementById('clock2').textContent = s;
     }
     tick(); setInterval(tick, 1000);
 
-    // Tick marks
-    const ticksEl = document.getElementById('ticks');
-    for (let i = 0; i < 72; i++) {
-      const t = document.createElement('div');
-      t.className = 'tick' + (i % 6 === 0 ? ' tick-major' : '');
-      const angle = (i * 5) - 90;
-      // position from center outward at 48% radius
-      const rad = angle * Math.PI / 180;
-      const r = 47.5;
-      const cx = 50 + r * Math.cos(rad);
-      const cy = 50 + r * Math.sin(rad);
-      t.style.cssText = `
-        position:absolute;
-        left:${cx}%;top:${cy}%;
-        width:${i%6===0?'1.8%':'1.1%'};height:1px;
-        background:rgba(212,168,67,${i%6===0?.35:.18});
-        transform:rotate(${angle+90}deg);
-        transform-origin:left center;
-      `;
-      ticksEl.appendChild(t);
+    // ── Build tick marks for a radar element ──
+    function buildTicks(container) {
+      for (let i = 0; i < 72; i++) {
+        const t = document.createElement('div');
+        const isMajor = i % 6 === 0;
+        const angle = (i * 5) - 90;
+        const rad = angle * Math.PI / 180;
+        const r = 47.5;
+        const cx = 50 + r * Math.cos(rad);
+        const cy = 50 + r * Math.sin(rad);
+        t.style.cssText = `
+          position:absolute;
+          left:${cx}%;top:${cy}%;
+          width:${isMajor?'1.8%':'1.1%'};height:1px;
+          background:rgba(0,212,212,${isMajor?.38:.18});
+          transform:rotate(${angle+90}deg);
+          transform-origin:left center;
+        `;
+        container.appendChild(t);
+      }
     }
+    buildTicks(document.getElementById('ticks-left'));
+    buildTicks(document.getElementById('ticks-right'));
 
-    // Degree labels every 30°
-    const degs = [0,30,60,90,120,150,180,210,240,270,300,330];
+    // ── Degree labels for left radar ──────────
+    const degs   = [0,30,60,90,120,150,180,210,240,270,300,330];
     const labels = ['N','030','060','E','120','150','S','210','240','W','300','330'];
-    degs.forEach((deg,i) => {
+    degs.forEach((deg, i) => {
       const el = document.createElement('span');
-      el.style.cssText = `
-        position:absolute;
-        font-size:clamp(7px,.9vw,11px);
-        color:rgba(212,168,67,${i%3===0?.55:.3});
-        letter-spacing:.04em;
-        font-family:'Share Tech Mono',monospace;
-      `;
       const rad = (deg - 90) * Math.PI / 180;
       const r = 44;
       const cx = 50 + r * Math.cos(rad);
       const cy = 50 + r * Math.sin(rad);
-      el.style.left = cx + '%';
-      el.style.top  = cy + '%';
-      el.style.transform = 'translate(-50%,-50%)';
+      el.style.cssText = `
+        position:absolute;
+        font-size:clamp(6px,.7vw,9px);
+        color:rgba(0,212,212,${i%3===0?.55:.28});
+        letter-spacing:.04em;
+        font-family:'Share Tech Mono',monospace;
+        left:${cx}%; top:${cy}%;
+        transform:translate(-50%,-50%);
+        pointer-events:none;
+      `;
       el.textContent = labels[i];
-      document.querySelector('.radar').appendChild(el);
+      document.getElementById('radar-left').appendChild(el);
     });
+
+    // ── Tab switching ─────────────────────────
+    const tabLogin    = document.getElementById('tab-login');
+    const tabRegister = document.getElementById('tab-register');
+    const formLogin   = document.getElementById('form-login');
+    const formReg     = document.getElementById('form-register');
+
+    function showLogin() {
+      tabLogin.classList.add('active');
+      tabRegister.classList.remove('active');
+      formLogin.classList.remove('hidden');
+      formReg.classList.add('hidden');
+    }
+    function showRegister() {
+      tabRegister.classList.add('active');
+      tabLogin.classList.remove('active');
+      formReg.classList.remove('hidden');
+      formLogin.classList.add('hidden');
+    }
+    tabLogin.addEventListener('click', showLogin);
+    tabRegister.addEventListener('click', showRegister);
+    document.getElementById('go-login').addEventListener('click', e => { e.preventDefault(); showLogin(); });
+    document.getElementById('go-register').addEventListener('click', e => { e.preventDefault(); showRegister(); });
+
+    // ── Branch selector ───────────────────────
+    const rankMap = {
+      ejercito: ['Soldado Raso', 'Cabo', 'Sargento'],
+      armada:   ['Marinero Segundo', 'Marinero Primero', 'Cabo de Mar'],
+      fuerza:   ['Aerotécnico', 'Cabo Aerotécnico', 'Sargento Técnico'],
+    };
+    document.querySelectorAll('.branch-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.branch-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const branch = btn.dataset.branch;
+        document.getElementById('rank-value').textContent = rankMap[branch][0];
+      });
+    });
+
+    // ── Password toggle ───────────────────────
+    function togglePw(id, btn) {
+      const inp = document.getElementById(id);
+      if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'OCULTAR'; }
+      else { inp.type = 'password'; btn.textContent = 'VER'; }
+    }
   </script>
 </body>
 </html>
