@@ -74,31 +74,38 @@ body {
   border-radius: 50%;
   background:
     radial-gradient(circle at center,
-      rgba(40,28,4,.6) 0%,
-      rgba(12,8,0,.92) 60%,
-      rgba(2,1,0,.98) 100%);
-  border: 1px solid rgba(212,168,67,.22);
+      rgba(50,35,5,.65) 0%,
+      rgba(14,10,1,.94) 55%,
+      rgba(2,1,0,.99) 100%);
+  border: 1px solid rgba(212,168,67,.28);
   box-shadow:
-    0 0 60px  rgba(212,168,67,.06),
-    0 0 120px rgba(212,168,67,.03),
-    inset 0 0 80px  rgba(212,168,67,.04),
+    0 0 60px  rgba(212,168,67,.08),
+    0 0 120px rgba(212,168,67,.04),
+    inset 0 0 80px  rgba(212,168,67,.06),
     inset 0 0 200px rgba(0,0,0,.7);
   overflow: hidden;
+  animation: discGlow 5s ease-in-out infinite;
 }
 
 /* ── Rings ── */
 .radar-rings { position: absolute; inset: 0; }
+
+@keyframes ringPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
 
 .ring {
   position: absolute;
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
+  animation: ringPulse 4s ease-in-out infinite;
 }
-.ring:nth-child(1) { width:96%; height:96%; border:1px solid rgba(212,168,67,.16); }
-.ring:nth-child(2) { width:73%; height:73%; border:1px solid rgba(212,168,67,.14); }
-.ring:nth-child(3) { width:49%; height:49%; border:1px solid rgba(212,168,67,.12); }
-.ring:nth-child(4) { width:25%; height:25%; border:1px solid rgba(212,168,67,.10); }
+.ring:nth-child(1) { width:96%; height:96%; border:1px solid rgba(212,168,67,.22); animation-delay: 0s; }
+.ring:nth-child(2) { width:73%; height:73%; border:1px solid rgba(212,168,67,.20); animation-delay: .8s; }
+.ring:nth-child(3) { width:49%; height:49%; border:1px solid rgba(212,168,67,.18); animation-delay: 1.6s; }
+.ring:nth-child(4) { width:25%; height:25%; border:1px solid rgba(212,168,67,.15); animation-delay: 2.4s; }
 
 /* ring labels */
 .ring-label {
@@ -178,15 +185,36 @@ body {
   border-radius: 50%;
   background:
     conic-gradient(from 0deg,
-      rgba(212,168,67,.85),
-      rgba(240,192,80,.5) 6%,
-      rgba(212,168,67,.25) 15%,
-      rgba(212,168,67,.06) 25%,
-      transparent 35%);
-  filter: blur(2px);
+      rgba(255,220,100,.95),
+      rgba(240,192,80,.75)  4%,
+      rgba(212,168,67,.55)  9%,
+      rgba(212,168,67,.30) 18%,
+      rgba(212,168,67,.10) 28%,
+      transparent          40%);
+  filter: blur(1.5px);
   mix-blend-mode: screen;
   transform-origin: center center;
 }
+
+/* Bright leading edge line */
+.sweep::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 50%; height: 1.5px;
+  background: linear-gradient(90deg, rgba(255,240,160,.95), transparent);
+  transform-origin: left center;
+  transform: rotate(0deg);
+  border-radius: 2px;
+}
+
+/* Rotating radial outer glow on the disc */
+@keyframes discGlow {
+  0%   { box-shadow: 0 0 60px rgba(212,168,67,.06), 0 0 120px rgba(212,168,67,.03), inset 0 0 80px rgba(212,168,67,.04), inset 0 0 200px rgba(0,0,0,.7); }
+  50%  { box-shadow: 0 0 80px rgba(212,168,67,.12), 0 0 160px rgba(212,168,67,.06), inset 0 0 100px rgba(212,168,67,.08), inset 0 0 200px rgba(0,0,0,.6); }
+  100% { box-shadow: 0 0 60px rgba(212,168,67,.06), 0 0 120px rgba(212,168,67,.03), inset 0 0 80px rgba(212,168,67,.04), inset 0 0 200px rgba(0,0,0,.7); }
+}
+
 
 /* ── Center ── */
 .radar-center {
