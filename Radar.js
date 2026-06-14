@@ -66,15 +66,15 @@ function drawRadar(now) {
 
   // ── Deep radial background ──
   const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 1.2);
-  bg.addColorStop(0,   'rgba(255, 130, 0, 0.06)');
-  bg.addColorStop(0.4, 'rgba(200,  90, 0, 0.02)');
-  bg.addColorStop(1,   '#030303');
+  bg.addColorStop(0,   'rgba(201, 162, 39, 0.055)');
+  bg.addColorStop(0.4, 'rgba(139, 105, 20, 0.018)');
+  bg.addColorStop(1,   '#080600');
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
   // ── Tactical grid ──
   ctx.save();
-  ctx.strokeStyle = 'rgba(255, 130, 0, 0.025)';
+  ctx.strokeStyle = 'rgba(201, 162, 39, 0.022)';
   ctx.lineWidth   = 1;
   const step = 90;
   for (let x = cx % step; x < W; x += step) {
@@ -91,7 +91,7 @@ function drawRadar(now) {
     const alpha = Math.max(0.005, 0.085 - i * 0.011);
     ctx.beginPath();
     ctx.arc(cx, cy, R * frac, 0, Math.PI * 2);
-    ctx.strokeStyle = `rgba(255, 130, 0, ${alpha.toFixed(4)})`;
+    ctx.strokeStyle = `rgba(201, 162, 39, ${alpha.toFixed(4)})`;
     ctx.lineWidth = 1;
     ctx.stroke();
 
@@ -103,7 +103,7 @@ function drawRadar(now) {
         ctx.beginPath();
         ctx.moveTo(cx + Math.cos(angle) * r0, cy + Math.sin(angle) * r0);
         ctx.lineTo(cx + Math.cos(angle) * r1, cy + Math.sin(angle) * r1);
-        ctx.strokeStyle = `rgba(255,130,0,${(alpha * 1.8).toFixed(4)})`;
+        ctx.strokeStyle = `rgba(245,200,66,${(alpha * 2.0).toFixed(4)})`;
         ctx.lineWidth = 1;
         ctx.stroke();
       });
@@ -111,13 +111,13 @@ function drawRadar(now) {
   });
 
   // ── Crosshair ──
-  ctx.strokeStyle = 'rgba(255, 130, 0, 0.055)';
+  ctx.strokeStyle = 'rgba(201, 162, 39, 0.05)';
   ctx.lineWidth   = 1;
   ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(W, cy); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, H); ctx.stroke();
 
   // ── Diagonal range lines (45°) ──
-  ctx.strokeStyle = 'rgba(255, 130, 0, 0.018)';
+  ctx.strokeStyle = 'rgba(201, 162, 39, 0.016)';
   ctx.lineWidth   = 1;
   const diagLen = Math.hypot(W, H);
   [45, 135].forEach(deg => {
@@ -142,7 +142,7 @@ function drawRadar(now) {
     ctx.moveTo(cx, cy);
     ctx.arc(cx, cy, R, a0, a1, true);
     ctx.closePath();
-    ctx.fillStyle = `rgba(255, 140, 0, ${alpha.toFixed(4)})`;
+    ctx.fillStyle = `rgba(201, 162, 39, ${alpha.toFixed(4)})`;
     ctx.fill();
   }
   ctx.restore();
@@ -155,16 +155,16 @@ function drawRadar(now) {
     cx + Math.cos(sweepRad) * R,
     cy + Math.sin(sweepRad) * R
   );
-  lineGrad.addColorStop(0,   'rgba(255, 200, 80, 0.95)');
-  lineGrad.addColorStop(0.25, 'rgba(255, 152, 0, 0.55)');
-  lineGrad.addColorStop(1,   'rgba(255, 140, 0, 0)');
+  lineGrad.addColorStop(0,   'rgba(245, 200, 66, 0.95)');
+  lineGrad.addColorStop(0.25, 'rgba(201, 162, 39, 0.55)');
+  lineGrad.addColorStop(1,   'rgba(139, 105, 20, 0)');
   ctx.beginPath();
   ctx.moveTo(cx, cy);
   ctx.lineTo(cx + Math.cos(sweepRad) * R, cy + Math.sin(sweepRad) * R);
   ctx.strokeStyle  = lineGrad;
   ctx.lineWidth    = 2.5;
-  ctx.shadowColor  = 'rgba(255, 152, 0, 0.8)';
-  ctx.shadowBlur   = 10;
+  ctx.shadowColor  = 'rgba(245, 200, 66, 0.9)';
+  ctx.shadowBlur   = 12;
   ctx.stroke();
   ctx.restore();
 
@@ -186,9 +186,9 @@ function drawRadar(now) {
 
     // glow halo
     const grd = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, 18 * alpha * s + 2);
-    grd.addColorStop(0,   `rgba(255, 220, 80,  ${(alpha * 0.9).toFixed(3)})`);
-    grd.addColorStop(0.3, `rgba(255, 152,  0,  ${(alpha * 0.5).toFixed(3)})`);
-    grd.addColorStop(1,   'rgba(255, 140,  0, 0)');
+    grd.addColorStop(0,   `rgba(245, 210, 80,  ${(alpha * 0.9).toFixed(3)})`);
+    grd.addColorStop(0.3, `rgba(201, 162, 39,  ${(alpha * 0.5).toFixed(3)})`);
+    grd.addColorStop(1,   'rgba(139, 105, 20, 0)');
     ctx.beginPath();
     ctx.arc(b.x, b.y, 18, 0, Math.PI * 2);
     ctx.fillStyle = grd;
@@ -197,8 +197,8 @@ function drawRadar(now) {
     // core dot
     ctx.beginPath();
     ctx.arc(b.x, b.y, 2.5 * s, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255, 240, 160, ${alpha.toFixed(3)})`;
-    ctx.shadowColor = '#ffdd80';
+    ctx.fillStyle = `rgba(245, 230, 140, ${alpha.toFixed(3)})`;
+    ctx.shadowColor = '#f5c842';
     ctx.shadowBlur  = 8;
     ctx.fill();
 
@@ -211,7 +211,7 @@ function drawRadar(now) {
       ctx.lineTo(b.x,     b.y + d);
       ctx.lineTo(b.x - d, b.y    );
       ctx.closePath();
-      ctx.strokeStyle = `rgba(255,200,60, ${(alpha * 0.55).toFixed(3)})`;
+      ctx.strokeStyle = `rgba(245,200,66, ${(alpha * 0.6).toFixed(3)})`;
       ctx.lineWidth   = 0.8;
       ctx.shadowBlur  = 0;
       ctx.stroke();
@@ -225,8 +225,8 @@ function drawRadar(now) {
   // outer pulse ring
   const pulseSize = 8 + 4 * Math.abs(Math.sin(elapsed * 1.8));
   const pulseGrd = ctx.createRadialGradient(cx, cy, 0, cx, cy, pulseSize);
-  pulseGrd.addColorStop(0,   'rgba(255,200,60,0.18)');
-  pulseGrd.addColorStop(1,   'rgba(255,152, 0,0)');
+  pulseGrd.addColorStop(0,   'rgba(245,200,66,0.2)');
+  pulseGrd.addColorStop(1,   'rgba(139,105,20,0)');
   ctx.beginPath();
   ctx.arc(cx, cy, pulseSize, 0, Math.PI * 2);
   ctx.fillStyle = pulseGrd;
@@ -235,9 +235,9 @@ function drawRadar(now) {
   // inner solid dot
   ctx.beginPath();
   ctx.arc(cx, cy, 3.5, 0, Math.PI * 2);
-  ctx.fillStyle   = '#ffaa20';
-  ctx.shadowColor = '#ff9800';
-  ctx.shadowBlur  = 14;
+  ctx.fillStyle   = '#f5c842';
+  ctx.shadowColor = '#c9a227';
+  ctx.shadowBlur  = 16;
   ctx.fill();
   ctx.restore();
 }
